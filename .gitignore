@@ -1,0 +1,11 @@
+.bin
+.DS_Store
+.env
+
+.idea
+.vs
+.vscode
+
+tmp
+
+config.yaml

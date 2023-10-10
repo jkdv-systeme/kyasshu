@@ -1,0 +1,13 @@
+{
+    local_certs
+    on_demand_tls {
+        ask      http://localhost:8765/ssl/check
+    }
+}
+
+https:// {
+    tls {
+        on_demand
+    }
+    reverse_proxy localhost:8765
+}
