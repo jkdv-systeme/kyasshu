@@ -10,6 +10,7 @@ import (
 	"github.com/jkdv-systeme/kyasshu/internal/responses"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
+	"net/url"
 	"strings"
 )
 
@@ -20,13 +21,18 @@ func proxy(c *fiber.Ctx) error {
 		return responses.NewError(fiber.StatusBadRequest, "path must be specified")
 	}
 
-	path = strings.TrimPrefix(path, "/")
+	path, err := url.QueryUnescape(strings.TrimPrefix(path, "/"))
+
+	if err != nil {
+		log.Error().Err(err).Msg("failed to unescape path")
+		return responses.NewError(fiber.StatusBadRequest, "path must be specified")
+	}
 
 	log.Info().Str("host", c.Hostname()).Msgf("proxying request for %s", path)
 
 	var domains config.DomainConfig
 
-	err := viper.UnmarshalKey("domains", &domains)
+	err = viper.UnmarshalKey("domains", &domains)
 
 	if err != nil {
 		log.Error().Err(err).Msg("failed to unmarshal domains")
