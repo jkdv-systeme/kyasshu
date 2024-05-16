@@ -6,14 +6,13 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/google/uuid"
-	"github.com/rs/zerolog/log"
 )
 
 func Register(app *fiber.App) {
 	app.Use(requestid.New(requestid.Config{
 		Generator: func() string {
 			reqid := uuid.New().String()
-			log.Logger = log.Logger.With().Interface("request", reqid).Logger()
+			//log.Logger = log.Logger.With().Interface("request", reqid).Logger()
 			return reqid
 		},
 	}))

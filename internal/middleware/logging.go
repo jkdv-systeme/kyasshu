@@ -10,6 +10,9 @@ import (
 func logging() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		start := time.Now()
+
+		c.Locals("logger", log.Logger.With().Interface("request", c.Locals("requestid")).Logger())
+
 		log.Info().Str("method", c.Method()).Str("path", c.Path()).Msg("Received request")
 		// Go to next middleware:
 		next := c.Next()
