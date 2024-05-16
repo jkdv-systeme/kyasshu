@@ -15,7 +15,7 @@ import (
 )
 
 func proxy(c *fiber.Ctx) error {
-	logger := c.Locals("logger").(*zerolog.Logger)
+	logger := c.Locals("logger").(zerolog.Logger)
 
 	path := c.Params("+")
 
